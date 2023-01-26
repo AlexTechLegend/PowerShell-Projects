@@ -1,0 +1,53 @@
+$scriptPath = $PSScriptRoot
+
+do {
+
+$folderPath = "$scriptPath\Requirements1"
+
+switch (Read-Host "Please select an option: 
+1. List log files with current date 
+2. List files in tabular format 
+3. Show CPU and memory usage 
+4. List running processes 
+5. Exit
+Enter a number between 1-5") {
+    1 {
+        
+        # This will list everything in the dir then find anything with .log and create a new folder to append the info to
+        $currentDate = (Get-Date).ToString("MM-dd-yyyy")
+        Get-ChildItem $folderPath -Include *.log -Recurse | 
+            Out-File -FilePath "$folderPath\DailyLog.txt" -Append -NoClobber
+        "Files listed on $currentDate" | Out-File -FilePath "$folderPath\DailyLog.txt" -Append -NoClobber
+    }
+    2 {
+        # List files in requirements1 and put in tabular format and append them to a new folder
+        Get-ChildItem $folderPath | 
+            Sort-Object Name | 
+            Format-Table Name, LastWriteTime | 
+            Out-File -FilePath "$folderPath\C916contents.txt"
+    }
+    3 {
+        # This will List the CPU and Memory usage in a readable format
+        Get-Counter -Counter '\Processor(_Total)\% Processor Time'
+        Get-Counter -Counter '\Memory\Available MBytes'
+    }
+    4 {
+        # Will list all of the current processes
+        Get-Process | 
+            Sort-Object -Property WS | 
+            Format-Table -Property Name, WS, PM -AutoSize
+    }
+    5 {
+        exit
+    }
+    default {
+        Write-Host "Invalid option. Please select a number between 1 and 5."
+        }
+    }
+} while ($true)
+
+try {
+    # Code that may throw an exception
+} catch [System.OutOfMemoryException] {
+    # Code to handle the exception
+}
