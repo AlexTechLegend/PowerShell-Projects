@@ -1,0 +1,24 @@
+# Import the Active Directory module
+Import-Module ActiveDirectory
+do {
+# Prompt for user input
+$username = Read-Host "Enter the username of the user you want to remove"
+
+# Search for the user
+$user = Get-ADUser -Filter {SamAccountName -eq $username} -Properties *
+
+# Check if the user was found
+if ($user) {
+    # Confirm the removal
+    $confirm = Read-Host "Are you sure you want to remove the user $($user.Name)? (Y/N)"
+    if ($confirm -eq "Y") {
+        # Remove the user
+        Remove-ADUser -Identity $user
+        Write-Host "User $($user.Name) was successfully removed."
+    } else {
+        Write-Host "User removal cancelled."
+    }
+} else {
+    Write-Host "User not found."
+    }
+} while ($true)
