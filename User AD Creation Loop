@@ -1,0 +1,18 @@
+Import-Module ActiveDirectory
+do {
+
+# Import the Active Directory module
+Import-Module ActiveDirectory
+
+# Prompt for user input
+$username = Read-Host "Enter the username"
+$password = Read-Host "Enter the password" -AsSecureString
+$firstname = Read-Host "Enter the first name"
+$lastname = Read-Host "Enter the last name"
+$ou = Read-Host "Enter the OU path (e.g. 'OU=Users,DC=example,DC=com')"
+
+# Create the new user account
+New-ADUser -Name "$firstname $lastname" -GivenName $firstname -Surname $lastname -SamAccountName $username -UserPrincipalName "$username@example.com" -AccountPassword $password -Enabled $true -Path $ou
+
+} while ($true)
+
