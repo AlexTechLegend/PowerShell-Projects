@@ -1,0 +1,42 @@
+$scriptPath = $PSScriptRoot
+$password = "Password1"
+$pass = ConvertTo-SecureString $password -AsPlainText -Force
+
+# Check for the existence of the Finance OU
+if (Get-ADOrganizationalUnit -Filter {Name -eq "Finance"}) {
+  Write-Output "The Finance OU already exists."
+  # Delete the Finance OU if it exists
+  Remove-ADOrganizationalUnit -Identity "OU=Finance,DC=consultingfirm,DC=com" -Confirm:$false
+  Write-Output "The Finance OU has been deleted."
+} else {
+  Write-Output "The Finance OU does not exist."
+}
+
+# Create the Finance OU
+New-ADOrganizationalUnit -Name "Finance" -Path "DC=consultingfirm,DC=com" -ProtectedFromAccidentalDeletion $false
+Write-Output "The Finance OU has been created."
+
+# Import the financePersonnel.csv file into the Finance OU
+$users = Import-Csv $scriptPath\CSV-Files\financePersonnel.csv
+# Defining a target OU
+$Finance = "OU=Finance,DC=consultingfirm,DC=com"
+# Loop through each user in the csv file
+foreach ($user in $users) {
+  # Create the user in Active Directory
+  New-ADUser -AccountPassword $pass `
+             -Name "$($user.First_Name) $($user.Last_Name)" `
+             -GivenName $user.First_Name `
+             -Surname $user.Last_Name `
+             -DisplayName "$($user.First_Name) $($user.Last_Name)" `
+             -SamAccountName $user.samAccount `
+             -City $user.City `
+             -PostalCode $user.PostalCode `
+             -OfficePhone $user.OfficePhone `
+             -MobilePhone $user.MobilePhone `
+             -Path $Finance `
+             -PasswordNeverExpires $true `
+             -Enabled $true
+
+}
+Write-Output "Users have been created."
+Write-Output "The financePersonnel.csv file has been imported into the Finance OU."
