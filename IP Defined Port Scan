@@ -1,0 +1,32 @@
+do {
+    # Define IP
+    $ip = Read-Host "Enter the IP address that you are wanting to search: "
+
+    # Define the Port
+    $ports = Read-Host "Enter the port(s) you are wanting to monitor (If more than one display it as such 80, 443, 3389): " -split ","
+
+    # Loop check for ip and ports
+    foreach ($port in $ports) {
+        $port = $port.Trim()
+        if ([int]::TryParse($port, [ref]$null)) {
+            $results = Test-NetConnection -ComputerName $ip -Port $port -InformationLevel Quiet
+            if ($results.TcpTestSucceeded) {
+                Write-Host "Port $port is open on $ip." -BackgroundColor Black -ForegroundColor Cyan
+            } else {
+                Write-Host "Port $port is closed on $ip." -BackgroundColor Black -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Invalid port number: $port" -BackgroundColor Black -ForegroundColor Yellow
+        }
+    }
+
+    # Asking for another ip and port
+    $confirm = Read-Host "Are you wanting to search another IP & Port (Y or N)?"
+    if ($confirm -eq "Y") {
+        # If true continue
+        Write-Host "Restarting Script" -BackgroundColor Black -ForegroundColor Green
+    } else {
+        Write-Host "Scan Complete" -BackgroundColor Black -ForegroundColor Green
+        exit
+    }
+} while ($true)
