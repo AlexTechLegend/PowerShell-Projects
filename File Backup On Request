@@ -1,0 +1,30 @@
+do {
+    # Asking what the file path is
+    $FPath = Read-Host "What is the file path of the item(s) you are wanting to select?"
+
+    # Defining dest. path
+    $DPath = Read-Host "Where is the path that you are wanting to backup to?"
+
+    # Ask if the file needs to be zipped or not
+    $ZT = Read-Host "Are you wanting to backup item(s) to a ZIP folder (Y or N)?"
+
+    if ($ZT -eq "Y") {
+        # Compress the file & copy to another path
+        Compress-Archive -Path $FPath | Copy-Item -DestinationPath $DPath
+        Write-Host "Backing up zipped item..." -BackgroundColor Black ForegroundColor Cyan
+    } else {
+        Copy-Item -Path $FPath -DestinationPath $DPath
+        Write-Host "Backing up item..." -BackgroundColor Black ForegroundColor Cyan
+    }
+
+    # Give option to select another item
+    $Repeat = Read-Host "Are you wanting to select another item (Y or N)?"
+
+    if ($Repeat -eq "N") {
+        # Completion Statement
+        Write-Host "File transfer complete." -BackgroundColor Black ForegroundColor Green
+        exit
+    } else {
+        Continue
+    }
+} while ($true)
