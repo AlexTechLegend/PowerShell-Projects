@@ -1,0 +1,36 @@
+# Create a new directory
+New-Item -ItemType Directory -Name "rdtools"
+
+# cd into the dir
+Set-Location "rdtools"
+
+# Run the command and wait till it is done
+$process = Start-Process D:\Path\to\required\folderTools.cmd -PassThru
+Wait-Process -Id $process.id
+
+
+# Copy and Paste up to date files
+Copy-Item -Path "D:\Path\to\required\folder" -Destination "D:\Path\to\required\folder"
+
+Copy-Item -Path "D:\Path\to\required\folder" -Destination "D:\Path\to\required\folder"
+
+# Set Variables
+$Toolspath = "D:\Path\to\required\folder"
+
+$Toolspath2 = "D:\Path\to\required\folder"
+
+# Wait before the check
+Start-Sleep -Seconds 6
+
+# Check the last mode date on each file
+$lastmod1 = (Get-Item $RDToolspath).LastWriteTime
+Write-Host "The last modified time of $Toolspath is $lastmod1"
+$lastmod2 = (Get-Item $Toolspath2).LastWriteTime
+Write-Host "The last modified time of $Toolspath2 is $lastmod2"
+
+# Create a shortcut
+$WshShell = New-Object -ComObject WScript.Shell
+$shortcut = $WshShell.CreateShortcut("Desktop\Tool.lnk")
+$shortcut.TargetPath = D:\Path\to\required\folder
+$shortcut.Save()
+Write-Host "Shortcut created on the desktop"
