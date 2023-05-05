@@ -1,0 +1,31 @@
+try {
+    # Import the sqlserver module
+    Import-Module SqlServer
+    Set-ExecutionPolicy Unrestricted -Scope CurrentUser
+    
+    # Define the connection string and Variables
+    $serverInstance = "SRV19-PRIMARY\SQLEXPRESS"
+   
+    # create the database
+    $servername = ".\SQLEXPRESS"
+    $databasename = "ClientDB"
+    $table = 'dbo.client_a_contacts'
+
+    # This pulls sql scripts the are made, and inputs correct format
+    Invoke-Sqlcmd -ServerInstance $servername -InputFile $PSScriptRoot\SQL_Files\dbcreate.sql -verbose
+    Invoke-Sqlcmd -ServerInstance $servername -Database $databasename -InputFile $PSScriptRoot\SQL_Files\client_A_contacts.sql
+     
+    # import records from NewClientData.csv
+    Import-CSV $PSScriptRoot\CSV-Files\NewClientData.csv | ForEach-Object {Invoke-Sqlcmd `
+     -Database $databasename -ServerInstance $servername -Query "insert into $table (first_name,last_name,city,county,zip,officePhone,mobilePhone) VALUES `
+    ('$($_.first_name)','$($_.last_name)','$($_.city)','$($_.county)','$($_.zip)','$($_.officePhone)','$($_.mobilePhone)')"
+    }
+    
+    # Generate the output file SqlResults.txt
+    Invoke-Sqlcmd -Database $databaseName -ServerInstance $serverInstance -Query 'SELECT * FROM dbo.client_A_contacts' > $PSSCriptRoot\SqlResults.txt
+    Write-Output "SqlResults.txt file generated."
+     
+    # To catch and call out any error that script may run into
+    } catch {
+      Write-Output "An error occurred: $($_.Exception.Message)"
+    }
