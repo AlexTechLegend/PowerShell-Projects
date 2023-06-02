@@ -1,0 +1,236 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$Form = New-Object System.Windows.Forms.Form
+$Form.Text = "Escort Chat Menu"
+$Form.Width = 510
+$Form.Height = 320
+
+$TableLayoutPanel = New-Object System.Windows.Forms.TableLayoutPanel
+$TableLayoutPanel.Dock = 'Fill'
+$Form.Controls.Add($TableLayoutPanel)
+
+#############################################COLLUMN#1###########################################
+
+$INTRO = New-Object System.Windows.Forms.Label
+$INTRO.Text = "INTRODUCTION"
+$INTRO.AutoSize = $true
+$INTRO.Font = New-Object System.Drawing.Font($INTRO.Font, [System.Drawing.FontStyle]::Bold)
+$TableLayoutPanel.Controls.Add($INTRO, 0, 0)
+$TableLayoutPanel.SetColumnSpan($INTRO, 1)  
+
+$INTROB = New-Object System.Windows.Forms.Button
+$INTROB.Text = "Escort Introduction"
+$INTROB.Width = 150
+$TableLayoutPanel.Controls.Add($INTROB, 0, 1)
+$INTROB.Add_Click({
+    $Text = "This is the introductory text."
+    Set-Clipboard -Value $Text
+})
+
+##############################################
+
+$CONNECT = New-Object System.Windows.Forms.Label
+$CONNECT.Text = "ESTABLISH CONNECTION"
+$CONNECT.AutoSize = $true
+$CONNECT.Font = New-Object System.Drawing.Font($CONNECT.Font, [System.Drawing.FontStyle]::Bold)
+$TableLayoutPanel.Controls.Add($CONNECT, 0, 4)
+$TableLayoutPanel.SetColumnSpan($CONNECT, 1)
+
+$RDS = New-Object System.Windows.Forms.Label
+$RDS.Text = "Enter RDS connection path:"
+$RDS.AutoSize = $true
+$TableLayoutPanel.Controls.Add($RDS, 0, 5)
+$TableLayoutPanel.SetColumnSpan($RDS, 1)
+
+$RDSB = New-Object System.Windows.Forms.Button
+$RDSB.Text = "RDS Connection + Steps"
+$RDSB.Width = 150
+$TableLayoutPanel.Controls.Add($RDSB, 0, 6)
+$RDSB.Add_Click({
+    $RPath = $RDSPath.Text.Trim()
+    Set-Clipboard -Value "$RPath this is working? "
+    $RDSPath.Clear()
+})
+
+$RDSPath = New-Object System.Windows.Forms.TextBox
+$RDSPath.Multiline = $true
+$RDSPath.Width = 150
+$RDSPath.Height = 20
+$RDSPath.ScrollBars = "Vertical"
+$TableLayoutPanel.Controls.Add($RDSPath, 0, 7)
+$TableLayoutPanel.SetColumnSpan($RDSPath, 1)
+
+#############################################COLLUMN#2###########################################
+
+$IDLE = New-Object System.Windows.Forms.Label
+$IDLE.Text = "IDLE TIMES"
+$IDLE.AutoSize = $true
+$IDLE.Font = New-Object System.Drawing.Font($CONNECT.Font, [System.Drawing.FontStyle]::Bold)
+$TableLayoutPanel.Controls.Add($IDLE, 1, 0)
+$TableLayoutPanel.SetColumnSpan($IDLE, 1)  
+
+$IDLE5 = New-Object System.Windows.Forms.Button
+$IDLE5.Text = "5 Minutes Idle"
+$IDLE5.Width = 150
+$TableLayoutPanel.Controls.Add($IDLE5, 1, 1)
+$IDLE5.Add_Click({
+    $Text = "This is the introductory text."
+    Set-Clipboard -Value $Text
+})
+
+$IDLE10 = New-Object System.Windows.Forms.Button
+$IDLE10.Text = "10 Minutes Idle"
+$IDLE10.Width = 150
+$TableLayoutPanel.Controls.Add($IDLE10, 1, 2)
+$IDLE10.Add_Click({
+    $Text = "This is the introductory text."
+    Set-Clipboard -Value $Text
+})
+
+$IDLE15 = New-Object System.Windows.Forms.Button
+$IDLE15.Text = "15 Minutes Idle"
+$IDLE15.Width = 150
+$TableLayoutPanel.Controls.Add($IDLE15, 1, 3)
+$IDLE15.Add_Click({
+    $Text = "This is the introductory text."
+    Set-Clipboard -Value $Text
+})
+
+##############################################
+
+$Duals = New-Object System.Windows.Forms.Label
+$Duals.Text = "DUALS"
+$Duals.AutoSize = $true
+$Duals.Font = New-Object System.Drawing.Font($CONNECT.Font, [System.Drawing.FontStyle]::Bold)
+$TableLayoutPanel.Controls.Add($Duals, 1, 5)
+$TableLayoutPanel.SetColumnSpan($Duals, 1)  
+
+$DualsB = New-Object System.Windows.Forms.Button
+$DualsB.Text = "Duals Message"
+$DualsB.Width = 150
+$TableLayoutPanel.Controls.Add($DualsB, 1, 6)
+$DualsB.Add_Click({
+    $Text = "This is the introductory text."
+    Set-Clipboard -Value $Text
+})
+
+##############################################
+
+$AFK = New-Object System.Windows.Forms.Label
+$AFK.Text = "AFK"
+$AFK.AutoSize = $true
+$AFK.Font = New-Object System.Drawing.Font($CONNECT.Font, [System.Drawing.FontStyle]::Bold)
+$TableLayoutPanel.Controls.Add($AFK, 1, 8)
+$TableLayoutPanel.SetColumnSpan($AFK, 1)  
+
+$AFKB = New-Object System.Windows.Forms.Button
+$AFKB.Text = "AFK Statement"
+$AFKB.Width = 150
+$TableLayoutPanel.Controls.Add($AFKB, 1, 9)
+$AFKB.Add_Click({
+    $Text = "This is the introductory text."
+    Set-Clipboard -Value $Text
+})
+
+#############################################COLLUMN#3###########################################
+
+$EOS = New-Object System.Windows.Forms.Label
+$EOS.Text = "END OF SHIFT"
+$EOS.AutoSize = $true
+$EOS.Font = New-Object System.Drawing.Font($CONNECT.Font, [System.Drawing.FontStyle]::Bold)
+$TableLayoutPanel.Controls.Add($EOS, 2, 0)
+$TableLayoutPanel.SetColumnSpan($EOS, 2) 
+
+#############################################
+
+$EOS1 = New-Object System.Windows.Forms.Label
+$EOS1.Text = "Enter Minutes Left of Shift:"
+$EOS1.AutoSize = $true
+$TableLayoutPanel.Controls.Add($EOS1, 2, 1)
+$TableLayoutPanel.SetColumnSpan($EOS1, 1)
+
+$HCF = New-Object System.Windows.Forms.Button
+$HCF.Text = "Started Near End Of Shift"
+$HCF.Width = 150
+$TableLayoutPanel.Controls.Add($HCF, 2, 2)
+$HCF.Add_Click({
+    $HCFPath = $HCFTime1.Text.Trim()
+    Set-Clipboard -Value "$HCFPath this is working? "
+    $HCFTime1.Clear()
+})
+
+$HCFTime1 = New-Object System.Windows.Forms.TextBox
+$HCFTime1.Multiline = $true
+$HCFTime1.Width = 150
+$HCFTime1.Height = 20
+$TableLayoutPanel.Controls.Add($HCFTime1, 2, 3)
+$TableLayoutPanel.SetColumnSpan($HCFTime1, 2)
+
+#############################################
+
+$HCF2 = New-Object System.Windows.Forms.Button
+$HCF2.Text = "Initial Statement"
+$HCF2.Width = 150
+$TableLayoutPanel.Controls.Add($HCF2, 2, 4)
+$HCF2.Add_Click({
+    $HCF2Path = $HCFTime2.Text.Trim()
+    Set-Clipboard -Value "$HCF2Path this is working? "
+    $HCFTime2.Clear()
+})
+
+$HCFTime2 = New-Object System.Windows.Forms.TextBox
+$HCFTime2.Multiline = $true
+$HCFTime2.Width = 150
+$HCFTime2.Height = 20
+$TableLayoutPanel.Controls.Add($HCFTime2, 2, 5)
+$TableLayoutPanel.SetColumnSpan($HCFTime2, 2)
+
+#############################################
+
+$HCF3 = New-Object System.Windows.Forms.Button
+$HCF3.Text = "Reminder Statement"
+$HCF3.Width = 150
+$TableLayoutPanel.Controls.Add($HCF3, 2, 6)
+$HCF3.Add_Click({
+    $HCF3Path = $HCFTime3.Text.Trim()
+    Set-Clipboard -Value "$HCF3Path this is working? "
+    $HCFTime3.Clear()
+})
+
+$HCFTime3 = New-Object System.Windows.Forms.TextBox
+$HCFTime3.Multiline = $true
+$HCFTime3.Width = 150
+$HCFTime3.Height = 20
+$TableLayoutPanel.Controls.Add($HCFTime3, 2, 7)
+$TableLayoutPanel.SetColumnSpan($HCFTime3, 2)
+
+#############################################
+
+$HCF4 = New-Object System.Windows.Forms.Button
+$HCF4.Text = "Close Out Statement"
+$HCF4.Width = 150
+$TableLayoutPanel.Controls.Add($HCF4, 2, 8)
+$HCF4.Add_Click({
+    $HCF4Path = $HCFTime4.Text.Trim()
+    Set-Clipboard -Value "$HCF4Path this is working? "
+    $HCFTime4.Clear()
+})
+
+$HCFTime4 = New-Object System.Windows.Forms.TextBox
+$HCFTime4.Multiline = $true
+$HCFTime4.Width = 150
+$HCFTime4.Height = 20
+$TableLayoutPanel.Controls.Add($HCFTime4, 2, 9)
+$TableLayoutPanel.SetColumnSpan($HCFTime4, 2)
+
+##########################################################################################################
+
+$ColumnStyle1 = New-Object System.Windows.Forms.ColumnStyle([System.Windows.Forms.SizeType]::Percent, 50)
+$ColumnStyle2 = New-Object System.Windows.Forms.ColumnStyle([System.Windows.Forms.SizeType]::Percent, 50)
+$TableLayoutPanel.ColumnStyles.Add($ColumnStyle1)
+$TableLayoutPanel.ColumnStyles.Add($ColumnStyle2)
+
+$Form.ShowDialog() | Out-Null
+
+#Created by Alex Davis
