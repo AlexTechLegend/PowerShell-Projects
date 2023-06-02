@@ -1,0 +1,99 @@
+do {
+
+    Clear-Host
+    # URL Menu Selection or RDTool update
+    Write-Host "PATH UPDATE" -BackgroundColor Black -ForegroundColor Red
+    Write-Host "UPDATE: RDTools to personal drive." -BackgroundColor Black -ForegroundColor White
+    Write-Host "URL SELECTION" -BackgroundColor Black -ForegroundColor Cyan
+    Write-Host "    WEBSITE NAMES            ACCESS FROM            AUTHENICATION METHOD" -BackgroundColor Black -ForegroundColor Cyan
+    Write-Host "1. "
+    Write-Host "2. "
+    Write-Host "3. "
+    Write-Host "TOOL SELECTION" -BackgroundColor Black -ForegroundColor Green
+    Write-Host "4. "
+    Write-Host "5. "
+    Write-Host "6. "
+    Write-Host "7."
+    Write-Host "8."
+    Write-Host "9."
+    Write-Host "10."
+   
+    # Get user input and launch URL if valid
+    $selection = Read-Host "Enter your selection (1 - 10, UPDATE)"
+
+    # If statements for the menu selection
+    $urls = @{
+        "1" = "https://"
+        "2" = "https://"
+        "3" = "https://"
+   
+    }
+        if ($urls.ContainsKey($selection)) {
+            $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+            $url = $urls[$selection]
+            Start-Process -FilePath $edgePath -ArgumentList $url
+        }
+    elseif ($selection -ieq "UPDATE") {
+
+    # Start with adding user variables
+    $alias = Read-Host "Enter your v-alias: "
+
+    # Combine D:\Users\ with the directory name entered by the user
+    $searchPath = Join-Path "D:\Users" $alias
+
+    # Check if the directory exists
+    if (Test-Path $searchPath -PathType Container) {
+         Write-Host "Directory found: $searchPath" -BackgroundColor Black -ForegroundColor Green
+    }
+    else {
+        Write-Host "Directory not found" -BackgroundColor Black -ForegroundColor Red
+    }
+
+    # Run the command and wait till it is done
+    $process = Start-Process "$searchPath" -PassThru
+    Wait-Process -Id $process.id
+    Write-Host "RDTools have been updated." -BackgroundColor Black -ForegroundColor Cyan
+    Remove-Item "$searchPath" -Recurse -Force
+    Remove-Item "$searchPath" -Recurse -Force
+    Write-Host "Old paths have been removed." -BackgroundColor Black -ForegroundColor Cyan
+
+    # Updating the DSTS and DSMS apps
+    Write-Host "Updating DSTS and DSMS." -BackgroundColor Black -ForegroundColor Cyan
+    # DSMS and DSTS tool pull
+    Copy-Item -Path "$searchPath" -Destination "$searchPath" -Recurse
+    Copy-Item -Path "$searchPath" -Destination "$searchPath" -Recurse
+    Write-Host "DSTS and DSMS updated." -BackgroundColor Black -ForegroundColor Cyan
+
+    # Copy and Paste up to date files
+    Copy-Item -Path "$searchPath" -Destination "$searchPath"
+    Copy-Item -Path "$searchPath" -Destination "$searchPath"
+    Copy-Item -Path "$searchPath" -Destination "$searchPath"
+    Write-Host "clouds.txt and clouds_vip.txt have been updated." -BackgroundColor Black -ForegroundColor Cyan
+
+    # If Statements to launch all different applications
+    }
+    elseif ($selection -eq "4") {
+        Invoke-Item -Path "$searchPath"
+    }
+    elseif ($selection -eq "5") {
+        Invoke-Item -Path "$searchPath"   
+    }
+    elseif ($selection -eq "6") {
+        Start-Process "$searchPath"
+    }
+    elseif ($selection -eq "7") {
+        Invoke-Item -Path ""$searchPath"
+    }
+    elseif ($selection -eq "8") {
+        Invoke-Item -Path "$searchPath"
+    }
+    elseif ($selection -eq "9") {
+        Start-Process powershell.exe -ArgumentList "$searchPath"
+    }
+    elseif ($selection -eq "10") {
+        Start-Process "$searchPath"
+    }
+
+} while ($true)
+
+# Created by Alex Davis - v-alexdavis@microsoft.com
