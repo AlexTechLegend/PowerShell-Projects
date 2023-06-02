@@ -1,0 +1,20 @@
+# Start with adding user variables
+$alias = Read-Host "Enter your v-alias: "
+
+# Combine D:\Users\ with the directory name entered by the user
+$searchPath = Join-Path "D:\Users" $alias
+
+# Check if the directory exists
+if (Test-Path $searchPath -PathType Container) {
+    Write-Host "Directory found: $searchPath"
+}
+else {
+    Write-Host "Directory not found"
+}
+
+# Create a shortcut
+$WshShell = New-Object -ComObject WScript.Shell
+$shortcut = $WshShell.CreateShortcut("$searchpath\RDTools.lnk")
+$shortcut.TargetPath = "$PSScriptRoot\RDTools-Menu.ps1"
+$shortcut.Save()
+Write-Host "Shortcut created on the desktop"
