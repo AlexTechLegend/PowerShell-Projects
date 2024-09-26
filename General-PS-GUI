@@ -1,0 +1,105 @@
+Add-Type -AssemblyName PresentationFramework
+
+# Create Window
+$Window = New-Object System.Windows.Window
+$Window.Title = "Multi-Tab PowerShell GUI"
+$Window.Height = 400
+$Window.Width = 600
+$Window.WindowStartupLocation = "CenterScreen"
+
+# Create TabControl
+$TabControl = New-Object System.Windows.Controls.TabControl
+
+# Create Tabs
+$Tab1 = New-Object System.Windows.Controls.TabItem
+$Tab1.Header = "Tab 1"
+
+$Tab2 = New-Object System.Windows.Controls.TabItem
+$Tab2.Header = "Tab 2"
+
+$Tab3 = New-Object System.Windows.Controls.TabItem
+$Tab3.Header = "File Browser & Script Runner"
+
+# Add controls to Tab1
+$StackPanel1 = New-Object System.Windows.Controls.StackPanel
+$Button1 = New-Object System.Windows.Controls.Button
+$Button1.Content = "Button on Tab 1"
+$Button1.Add_Click({
+    [System.Windows.MessageBox]::Show("You clicked Button on Tab 1")
+})
+$StackPanel1.Children.Add($Button1)
+$Tab1.Content = $StackPanel1
+
+# Add controls to Tab2
+$StackPanel2 = New-Object System.Windows.Controls.StackPanel
+$Button2 = New-Object System.Windows.Controls.Button
+$Button2.Content = "Button on Tab 2"
+$Button2.Add_Click({
+    [System.Windows.MessageBox]::Show("You clicked Button on Tab 2")
+})
+$StackPanel2.Children.Add($Button2)
+$Tab2.Content = $StackPanel2
+
+# Create File Browser and Script Runner Controls for Tab 3
+$StackPanel3 = New-Object System.Windows.Controls.StackPanel
+$StackPanel3.Orientation = "Vertical"
+$StackPanel3.HorizontalAlignment = "Center"
+$StackPanel3.VerticalAlignment = "Top"
+
+# Create Button to browse files
+$FileBrowseButton = New-Object System.Windows.Controls.Button
+$FileBrowseButton.Content = "Browse for File"
+$FileBrowseButton.Margin = "1"
+$StackPanel3.Children.Add($FileBrowseButton)
+
+# Create TextBox to show selected file path
+$FilePathTextBox = New-Object System.Windows.Controls.TextBox
+$FilePathTextBox.Margin = "1"
+$FilePathTextBox.Width = 400
+$StackPanel3.Children.Add($FilePathTextBox)
+
+# Create TextBox for entering custom text
+$TextInputBox = New-Object System.Windows.Controls.TextBox
+$TextInputBox.Label = "Server Name"
+$TextInputBox.Margin = "1"
+$TextInputBox.Width = 400
+$TextInputBox.Height = 20
+$TextInputBox.TextWrapping = "Wrap"
+$StackPanel3.Children.Add($TextInputBox)
+
+# Create Button to run script
+$RunScriptButton = New-Object System.Windows.Controls.Button
+$RunScriptButton.Content = "Run Script"
+$RunScriptButton.Margin = "1"
+$StackPanel3.Children.Add($RunScriptButton)
+
+# Add functionality to file browse button
+$FileBrowseButton.Add_Click({
+    [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
+    $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+    if ($OpenFileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+        $FilePathTextBox.Text = $OpenFileDialog.FileName
+    }
+})
+
+# Add functionality to run script button
+$RunScriptButton.Add_Click({
+    $FilePath = $FilePathTextBox.Text
+    $CustomText = $TextInputBox.Text
+    [System.Windows.MessageBox]::Show("Running script with File: $FilePath and Custom Text: $CustomText")
+    # Insert your script logic here
+})
+
+# Add File Browser and Script Runner stack panel to Tab 3
+$Tab3.Content = $StackPanel3
+
+# Add tabs to TabControl
+$TabControl.Items.Add($Tab1)
+$TabControl.Items.Add($Tab2)
+$TabControl.Items.Add($Tab3)
+
+# Set content of the window
+$Window.Content = $TabControl
+
+# Show the window
+$Window.ShowDialog()
